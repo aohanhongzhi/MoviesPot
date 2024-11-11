@@ -13,6 +13,7 @@ import com.vlohachov.shared.domain.repository.MovieRepository
 import com.vlohachov.shared.domain.repository.SearchRepository
 import com.vlohachov.shared.domain.repository.SettingsRepository
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.ProxyBuilder
 import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -26,6 +27,10 @@ import org.koin.dsl.module
 internal val dataModule = module {
     single {
         HttpClient {
+            engine {
+//        代理，方便科学上网 https://ktor.io/docs/client-proxy.html#socks_proxy
+                proxy = ProxyBuilder.socks(host = "192.168.0.113", port = 20170)
+            }
             install(HttpCache)
             install(ContentNegotiation) {
                 json(
